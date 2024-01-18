@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "234819653523",
+    "project_id": "gym-logger-2",
+    "storage_bucket": "gym-logger-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234819653523:android:f1c44d290d26a0135c6266",
+        "android_client_info": {
+          "package_name": "com.example.gym_logger_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxUavsxSUqKcB2tgdrdHR52pPDzYU_JUk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
