@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:gym_logger_2/constants/routing.constants.dart';
 
-import 'package:gym_logger_2/screens/calendar.dart';
-
-import 'package:gym_logger_2/screens/auth/auth.dart';
 import 'package:gym_logger_2/services/storage.service.dart';
 
 String? jwt;
@@ -14,7 +12,6 @@ Future<void> main() async {
 
   final SecureStorage secureStorage = SecureStorage();
   jwt = await secureStorage.readSecureData('jwt');
-  print('jwt $jwt');
 
   runApp(
     const ProviderScope(
@@ -42,7 +39,6 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
-        // primarySwatch: Colors.blue,
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(
             255,
@@ -53,10 +49,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       initialRoute: jwt == null ? 'login' : '/',
-      routes: {
-        '/': (contex) => const Calendar(),
-        "login": (context) => const AuthScreen(),
-      },
+      routes: routes,
     );
   }
 }

@@ -60,7 +60,6 @@ class UserService {
           "Authorization": "Bearer $jwt"
         },
       );
-      print(response);
 
       if (response.statusCode != 200) {
         throw HttpException('${response.statusCode}');
@@ -68,7 +67,6 @@ class UserService {
 
       return User.fromJson(jsonDecode(response.body));
     } catch (err) {
-      print(err);
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

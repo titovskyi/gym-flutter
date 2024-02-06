@@ -52,3 +52,54 @@
 // //     await databaseReference.set(json.encode(training));
 // //   }
 // // }
+
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:gym_logger_2/constants/api.constants.dart';
+import 'package:gym_logger_2/models/exercise.dart';
+import 'package:gym_logger_2/services/storage.service.dart';
+import 'package:http/http.dart' as http;
+
+class ExerciseService {
+  final SecureStorage secureStorage = SecureStorage();
+
+  Future<List<Exercise>> getCommonExersises(
+    BuildContext context,
+  ) async {
+    final jwt = await secureStorage.readSecureData('jwt');
+
+    var response = await http.get(Uri.parse('$api/exercise'), headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt",
+    });
+
+    if (response.statusCode != 200) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('User is not exist.'),
+        ),
+      );
+
+      throw HttpException('${response.statusCode}');
+    }
+
+    return exercisesFromJson(response.body);
+  }
+}
+
+// //   Future<List<Workout>> getAllWorkouts() async {
+// //     try {
+// //       return await Future.delayed(
+// //         const Duration(seconds: 0),
+// //         () {
+// //           return workoutFromJson(dummyWorkouts);
+// //         },
+// //       );
+// //     } catch (e) {
+// //       print(e.toString());
+
+// //       return [];
+// //     }
+// //   }

@@ -1,21 +1,7 @@
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gym_logger_2/models/role.enum.dart';
 import 'package:gym_logger_2/screens/auth/auth.service.dart';
-import 'package:gym_logger_2/screens/calendar.dart';
 import 'package:gym_logger_2/services/user.service.dart';
-
-// import 'package:firebase_database/firebase_database.dart';
-
-// final firebase = FirebaseAuth.instance;
-
-// final firebaseApp = Firebase.app();
-// final rtdb = FirebaseDatabase.instanceFor(
-//   app: firebaseApp,
-//   databaseURL:
-//       'https://gym-logger-2-default-.europe-west1.firebasedatabase.app/',
-// );
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -37,6 +23,7 @@ class _AuthScreenState extends State<AuthScreen> {
   void _submit() async {
     final isValid = _form.currentState!.validate();
     String? loggedIn;
+
     if (!isValid) {
       return;
     }
@@ -57,15 +44,9 @@ class _AuthScreenState extends State<AuthScreen> {
     final user = await UserService().getUser(
       context,
     );
-
+    print(user);
     if (user != null) {
-      await Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) {
-            return const Calendar();
-          },
-        ),
-      );
+      await Navigator.of(context).pushNamed('/');
     }
   }
 

@@ -1,16 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gym_logger_2/constants/calendar.dart';
 import 'package:gym_logger_2/providers/calendar_provider.dart';
+import 'package:gym_logger_2/screens/training/models/training.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:gym_logger_2/models/workout.dart';
-import 'package:gym_logger_2/services/workout.service.dart';
+import 'package:gym_logger_2/models/exercise.dart';
 
 import 'package:flutter/material.dart';
 
 class CalendarWidget extends ConsumerStatefulWidget {
   final String uid;
+  final List<Training> trainings;
 
-  const CalendarWidget({super.key, required this.uid});
+  const CalendarWidget({
+    super.key,
+    required this.uid,
+    required this.trainings,
+  });
 
   @override
   ConsumerState<CalendarWidget> createState() {
@@ -19,17 +24,12 @@ class CalendarWidget extends ConsumerStatefulWidget {
 }
 
 class _CalendarWidgetState extends ConsumerState<CalendarWidget> {
-  late List<Workout> _userWorkouts = [];
+  late List<Exercise> _userWorkouts = [];
 
   DateTime _focusedDay = kToday;
   DateTime? _selectedDay = kToday;
 
   void onDaySelected(selectedDay, focusedDay) async {
-    // final userWorkouts = await WorkoutService().getAllUserWorkouts(
-    //   ref.read(calendarProvider),
-    //   widget.uid,
-    // );
-
     setState(() {
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
@@ -41,20 +41,16 @@ class _CalendarWidgetState extends ConsumerState<CalendarWidget> {
   @override
   void initState() {
     super.initState();
-
-    _getUserWorkouts(ref.read(calendarProvider));
   }
 
-  void _getUserWorkouts(DateTime day) async {
+  void _getUserTrainings() async {
     // final userWorkouts = await WorkoutService().getAllUserWorkouts(widget.uid);
 
     // _userWorkouts = userWorkouts;
   }
 
-  List<Workout> _getEventsForDay(day) {
-    // _getUserWorkouts(day);
-
-    return _userWorkouts
+  List<Training> _getEventsForDay(day) {
+    return widget.trainings
         .where(
           (element) =>
               DateTime(
@@ -63,9 +59,9 @@ class _CalendarWidgetState extends ConsumerState<CalendarWidget> {
                 day.day,
               ) ==
               DateTime(
-                element.date!.year,
-                element.date!.month,
-                element.date!.day,
+                element.createDate.year,
+                element.createDate.month,
+                element.createDate.day,
               ),
         )
         .toList();
@@ -86,7 +82,9 @@ class _CalendarWidgetState extends ConsumerState<CalendarWidget> {
               decoration: BoxDecoration(
                 // color: Colors.white,
                 border: Border.all(
-                  color: const Color.fromARGB(255, 0, 255, 26),
+                  color: ref.read(calendarProvider).day == data.day
+                      ? Colors.transparent
+                      : const Color.fromARGB(255, 0, 255, 26),
                   width: 4,
                 ),
                 shape: BoxShape.circle,
