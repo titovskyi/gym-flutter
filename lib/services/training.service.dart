@@ -13,7 +13,7 @@ class TrainingService {
   final SecureStorage secureStorage = SecureStorage();
 
   Future<void> save(
-    DateTime trainingDate,
+    DateTime? trainingDate,
     List<Exercise> exercises,
     BuildContext context,
   ) async {
@@ -26,7 +26,7 @@ class TrainingService {
         "Authorization": "Bearer $jwt",
       },
       body: jsonEncode({
-        'createDate': trainingDate.toIso8601String(),
+        'createDate': trainingDate?.toIso8601String(),
         'exercises': exercises,
       }),
     );
@@ -68,5 +68,31 @@ class TrainingService {
     }
 
     return trainingsFromJson(response.body);
+  }
+
+  Future<bool> remove(BuildContext context, int trainingId) async {
+    final jwt = await secureStorage.readSecureData('jwt');
+
+    final response = await http.delete(
+        Uri.parse(
+          '$api/training/${trainingId.toString()}',
+        ),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $jwt",
+        });
+
+    if (response.statusCode != 200) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('There is some error while removing training.'),
+        ),
+      );
+
+      throw HttpException('${response.statusCode}');
+    }
+
+    return true;
   }
 }

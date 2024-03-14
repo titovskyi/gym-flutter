@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gym_logger_2/constants/routing.constants.dart';
 import 'package:gym_logger_2/models/profile.dart';
 import 'package:gym_logger_2/providers/calendar_provider.dart';
 import 'package:gym_logger_2/providers/profile_provider.dart';
 import 'package:gym_logger_2/screens/auth/auth.dart';
-import 'package:gym_logger_2/models/exercise.dart';
 import 'package:gym_logger_2/screens/profile/profile.dart';
 import 'package:gym_logger_2/screens/training/models/training.dart';
-import 'package:gym_logger_2/screens/training/new_training.dart';
-import 'package:gym_logger_2/screens/training/training.service.dart';
+import 'package:gym_logger_2/services/training.service.dart';
 import 'package:gym_logger_2/services/storage.service.dart';
 import 'package:gym_logger_2/services/user.service.dart';
 
@@ -95,19 +92,19 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     final currentDate = ref.watch(calendarProvider);
     final currentDateEvents = trainings.isNotEmpty
         ? trainings
-            .where(
-              (element) =>
-                  DateTime(
-                    currentDate.year,
-                    currentDate.month,
-                    currentDate.day,
-                  ) ==
-                  DateTime(
-                    element.createDate.year,
-                    element.createDate.month,
-                    element.createDate.day,
-                  ),
-            )
+            // .where(
+            //   (element) =>
+            //       // DateTime(
+            //       //   currentDate.year,
+            //       //   currentDate.month,
+            //       //   currentDate.day,
+            //       // ) ==
+            //       // DateTime(
+            //       //   element.createDate.year,
+            //       //   element.createDate.month,
+            //       //   element.createDate.day,
+            //       // ),
+            // )
             .toList()
         : [];
 

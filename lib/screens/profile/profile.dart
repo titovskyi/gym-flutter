@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gym_logger_2/models/profile.dart';
 import 'package:gym_logger_2/providers/profile_provider.dart';
+import 'package:gym_logger_2/screens/auth/auth.dart';
+import 'package:gym_logger_2/screens/auth/auth.service.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -25,10 +27,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
+        automaticallyImplyLeading: false,
         actions: [
           // TODO have to be moved to profile
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    // return const NewTrainingScreen();
+                    return const AuthScreen();
+                  },
+                ),
+              );
+            },
             icon: const Icon(Icons.exit_to_app),
           ),
         ],

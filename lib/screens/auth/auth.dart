@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gym_logger_2/models/role.enum.dart';
 import 'package:gym_logger_2/screens/auth/auth.service.dart';
 import 'package:gym_logger_2/services/user.service.dart';
+import 'package:gym_logger_2/widgets/buttons/elevated_button.dart';
+import 'package:gym_logger_2/widgets/buttons/text_button.dart';
+import 'package:gym_logger_2/widgets/form-controls/dropdown_button_field.dart';
+import 'package:gym_logger_2/widgets/form-controls/text_form_field.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -69,14 +73,10 @@ class _AuthScreenState extends State<AuthScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Email Adress',
-                            ),
+                          GymTextFormField(
+                            label: 'Email Adress',
                             keyboardType: TextInputType.emailAddress,
-                            autocorrect: false,
-                            textCapitalization: TextCapitalization.none,
-                            validator: (value) {
+                            validate: (value) {
                               if (value == null ||
                                   value.trim().isEmpty ||
                                   !value.contains('@')) {
@@ -89,12 +89,13 @@ class _AuthScreenState extends State<AuthScreen> {
                               _email = value!;
                             },
                           ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Password',
-                            ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          GymTextFormField(
+                            label: 'Password',
                             obscureText: true,
-                            validator: (value) {
+                            validate: (value) {
                               if (value == null || value.trim().length < 6) {
                                 return 'Password should not be less then 6 symbols!';
                               }
@@ -105,10 +106,13 @@ class _AuthScreenState extends State<AuthScreen> {
                               _password = value!;
                             },
                           ),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           if (!_isLogin)
-                            DropdownButtonFormField<String?>(
+                            GymDropdownButtonField(
                               value: _role,
-                              items: <String>[
+                              items: [
                                 Role.Sportsman.name,
                                 Role.Trainer.name,
                               ].map<DropdownMenuItem<String>>((String value) {
@@ -120,26 +124,21 @@ class _AuthScreenState extends State<AuthScreen> {
                                   ),
                                 );
                               }).toList(),
-                              onChanged: (String? newValue) {
+                              onChange: (newValue) {
                                 setState(() {
                                   _role = newValue!;
                                 });
                               },
                             ),
                           const SizedBox(
-                            height: 12,
+                            height: 10,
                           ),
-                          ElevatedButton(
-                            onPressed: _submit,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer,
-                            ),
+                          GymElevatedButton(
+                            onPress: _submit,
                             child: Text(_isLogin ? 'Login' : 'Signup'),
                           ),
-                          TextButton(
-                            onPressed: () {
+                          GymTextButton(
+                            onPress: () {
                               setState(() {
                                 _isLogin = !_isLogin;
                               });

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gym_logger_2/providers/bottom_navigation.provider.dart';
+import 'package:gym_logger_2/screens/tab/tab_item.dart';
 import 'package:gym_logger_2/screens/tab/tab_navigator.dart';
 
 class TabNavigation extends ConsumerStatefulWidget {
@@ -17,48 +18,50 @@ class TabNavigationState extends ConsumerState<TabNavigation> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
   ];
 
   int currentPage = 0;
-  // TODO have to be updated to start use Enum
-  List<String> routes = [
-    '/',
-    '/new-training',
-    '/profile',
-  ];
 
   void _selectTab(int tabItem) {
     setState(() {
       currentPage = tabItem;
+      ref.watch(indexBottomNavbarProvider.notifier).updateChoosenTab(tabItem);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final indexBottomNavbar = ref.watch(indexBottomNavbarProvider);
-
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          // TODO have to be updated to start use Enum
-          _buildOffstageNavigator(0),
-          _buildOffstageNavigator(1),
-          _buildOffstageNavigator(2)
+          _buildOffstageNavigator(TabItem.trainings.index),
+          _buildOffstageNavigator(TabItem.exercises.index),
+          _buildOffstageNavigator(TabItem.calendar.index),
+          _buildOffstageNavigator(TabItem.profile.index),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        selectedItemColor: Colors.yellow,
+        unselectedItemColor: Color.fromARGB(255, 80, 83, 80),
+        backgroundColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Trainings',
+            icon: const Icon(Icons.home),
+            label: tabName[TabItem.trainings],
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Exercises',
+            icon: const Icon(Icons.favorite),
+            label: tabName[TabItem.exercises],
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
+            icon: const Icon(Icons.calendar_view_day),
+            label: tabName[TabItem.calendar],
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.account_circle),
+            label: tabName[TabItem.profile],
           ),
         ],
         currentIndex: currentPage,

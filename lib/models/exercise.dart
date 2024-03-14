@@ -21,24 +21,26 @@ class Exercise {
   final String subTitle;
   final List<String> equipment;
   final String preparation;
-  final List<dynamic> execution;
+  final List<String> execution;
   final String? imagePath;
   final ExerciseType type;
 
   Exercise({
-    required this.id,
+    this.id = 0,
     required this.title,
     required this.subTitle,
     required this.equipment,
     required this.preparation,
     required this.execution,
-    required this.imagePath,
+    this.imagePath = '',
     required this.type,
   });
 
   factory Exercise.fromJson(Map<String, dynamic> json) {
-    String imgPath = '/public${json['imagePath'].split('/public')[1]}';
-    print(json);
+    String imgPath = json['imagePath'] != ''
+        ? '/public${json['imagePath'].split('/public')[1]}'
+        : '';
+
     return Exercise(
       id: json['id'],
       title: json['title'],
@@ -54,7 +56,7 @@ class Exercise {
               ? (json['execution'] as String).split('|')
               : [json['execution']]
           : [],
-      imagePath: '$api${imgPath}',
+      imagePath: json['imagePath'] != '' ? '$api${imgPath}' : '',
       type: json['type'] != null
           ? ExerciseType.values[json['type']]
           : ExerciseType.Weight,

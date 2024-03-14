@@ -53,6 +53,7 @@
 // //   }
 // // }
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -86,6 +87,35 @@ class ExerciseService {
     }
 
     return exercisesFromJson(response.body);
+  }
+
+  Future<void> create(
+    Exercise exercise,
+    BuildContext context,
+  ) async {
+    final jwt = await secureStorage.readSecureData('jwt');
+
+    final response = await http.post(
+      Uri.parse('$api/exercise'),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $jwt",
+      },
+      body: jsonEncode(exercise),
+    );
+
+    if (response.statusCode != 200) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Exercise is not saved.'),
+        ),
+      );
+
+      throw HttpException('${response.statusCode}');
+    }
+
+    return;
   }
 }
 

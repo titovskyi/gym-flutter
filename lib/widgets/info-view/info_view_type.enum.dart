@@ -1,0 +1,4 @@
+enum InfoViewType {
+  Text,
+  NumbericList,
+}

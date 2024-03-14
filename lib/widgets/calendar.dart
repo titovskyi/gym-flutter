@@ -51,19 +51,19 @@ class _CalendarWidgetState extends ConsumerState<CalendarWidget> {
 
   List<Training> _getEventsForDay(day) {
     return widget.trainings
-        .where(
-          (element) =>
-              DateTime(
-                day.year,
-                day.month,
-                day.day,
-              ) ==
-              DateTime(
-                element.createDate.year,
-                element.createDate.month,
-                element.createDate.day,
-              ),
-        )
+        // .where(
+        //   (element) =>
+        //       DateTime(
+        //         day.year,
+        //         day.month,
+        //         day.day,
+        //       ) ==
+        //       DateTime(
+        //         element.createDate.year,
+        //         element.createDate.month,
+        //         element.createDate.day,
+        //       ),
+        // )
         .toList();
   }
 
